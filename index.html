@@ -1,38 +1,80 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>嚕咪毛！飲料訂購表</title>
+    <script src="https://d.line-scdn.net/liff/1.0/sdk.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script>
+	function initializeApp(data) {  //初始化LIFF
+		var userid = data.context.userId;  //取得ID
+	}
 
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>嚕喵毛</title>
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
-      crossorigin="anonymous">
-    <link rel="stylesheet" href="css/style.css">
-  </head>
+	function pushMsg(pname, pdatatime, proom) {
+		if (pname == '' || pdatatime == '' || proom == '') {  //資料檢查
+			alert('每個項目都必須輸入！');
+			return;
+		}
+		var msg = "###";  //回傳訊息字串
+		msg = msg + pname + "/";
+		msg = msg + amount + "/";
+		msg = msg + pdatatime + "/";
+		msg = msg + proom;
+		liff.sendMessages([  //推播訊息
+			{ type: 'text',
+			  text: msg
+			}
+		])
+			.then(() => {
+				liff.closeWindow();  //關閉視窗
+			});
+	}
 
-  <body>
-    <div class="container text-center">
-      <img src="./image/Frame.png" class="m-4">
-      <p>30 天建構出一個簡單 LineBot 機器人</p>
-      <a href="https://ithelp.ithome.com.tw/users/20151436/ironman/5362">
-        <button type="button" class="btn btn btn-outline-warning btn-learn btn-lg">學習更多</button>
-      </a>
+	$(document).ready(function () {
+		liff.init(function (data) {  //初始化LIFF
+			initializeApp(data);
+		});
+		
+		$('#sure').click(function (e) {  //按下確定鈕
+			pushMsg($('#name').val(), $('#datetime').val(), $('#sel_room').val());
+		});
+	});
+</script>
+</head>
+<body>
+    <div class="row" style="margin: 10px">
+        <div class="col-12" style="margin: 10px">
+            <label>姓名</label>
+            <input type="text" id="name" class="form-control" />
+            <br />
+            <label>日期</label>
+            <input type="date" id="datetime" value="" class="form-control" />
+            <br />
+            <label>飲料數量</label>
+            <input type="number" id="txb_amount" class="form-control" />
+            <br />
+            <label>品項</label>
+            <select id="sel_drink" class="form-control">
+                <option selected>茉莉綠茶</option>
+                <option>珍珠紅茶</option>
+                <option>紅茶拿鐵</option>
+                <option>四季春茶</option>
+                <option>冬瓜檸檬</option>
+            </select>
+            <br />
+            <label>加料</label>
+            <select id="sel_drink" class="form-control">
+                <option selected>無</option>
+                <option>白玉珍珠</option>
+                <option>椰果</option>
+                <option>仙草</option>
+                <option>小芋園</option>
+            </select>
+            <br />
+            <button class="btn btn-warning btn-block" id="sure">確定</button>
+        </div>
     </div>
-    <div class="text-center article p-5">
-      <p>一起來嚕嚕喵喵嗎~<br>然後然後，記得最後要一起打掃呦</p>
-      <div  class="container meow row">
-        <a href="https://ithelp.ithome.com.tw/users/20151436/ironman/5362" class="col-lg-4 col-xs-12">
-          <button type="button" class="btn btn btn-outline-light btn-learn m-4">第一隻喵</button>
-        </a>
-        <a href="https://ithelp.ithome.com.tw/users/20151436/ironman/5362" class="col-lg-4 col-xs-12">
-          <button type="button" class="btn btn btn-outline-light btn-learn m-4">第二隻喵</button>
-        </a>
-        <a href="https://ithelp.ithome.com.tw/users/20151436/ironman/5362" class="col-lg-4 col-xs-12">
-          <button type="button" class="btn btn btn-outline-light btn-learn m-4">第三隻喵</button>
-        </a>
-      </div>
-    </div>
-  </body>
+</body>
 </html>
