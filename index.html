@@ -8,6 +8,19 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script>
+        var liffID = '1657883205-Gqoe5XqB';
+
+            liff.init({
+              liffId: liffID
+            }).then(() => {
+            　var isInClient = liff.isInClient();
+            　console.log('isInClient', isInClient);
+            　$('#isInClient').val(isInClient);
+            }).catch((err) => {
+            　console.log('初始化失敗')
+            });
+
+
 	function initializeApp(data) {  //初始化LIFF
 		var userid = data.context.userId;  //取得ID
 	}
@@ -27,9 +40,16 @@
 			  text: msg
 			}
 		])
-			.then(() => {
-				liff.closeWindow();  //關閉視窗
-			});
+
+    			.then(function () {
+                    window.alert("訂房成功！");
+                    liff.closeWindow();
+                }).catch(function (error) {
+                    window.alert("Error sending message: " + error);
+                });
+
+
+
 	}
 
 	$(document).ready(function () {
